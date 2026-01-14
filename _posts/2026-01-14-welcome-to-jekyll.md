@@ -15,8 +15,8 @@ $ rbenv local 4.0.1
 $ bundle init
 $ bundle add jekyll
 $ bundle add logger
-$ bundle exec jekyll new zunda-blog
-$ cd zunda-blog
+$ bundle exec jekyll new zunda.github.io
+$ cd zunda.github.io
 $ rbenv local 4.0.1
 $ bundle add logger
 $ bundle exec jekyll serve
@@ -78,3 +78,19 @@ $ vi _posts/2026-01-14-welcome-to-jekyll.md
 ```shell
 $ git commit -a
 ```
+
+## GitHub Pagesで公開する
+[GitHub Pages documentation](https://docs.github.com/en/pages)に従って公開してみます。
+
+僕のGitHubアカウントではこれまで別のレポジトリをGitHub Pagesとして公開していました。[Creating a GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)に従って、新しいレポジトリをつくり、このサイトを公開してみます。[GitHub Pagesを公開するレポジトリ名は`<user>.github.io`に限定されているようです](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site#creating-a-repository-for-your-site)。
+
+1. 既存のレポジトリ`zunda/zunda.github.io`のSettings-PagesからGitHub PagesをUnpublish siteしビルド元のBranchをNoneにしSaveする
+1. レポジトリ名を変更する
+1. 新しいレポジトリ`zunda/zunda.github.io`を作る
+1. このサイトの内容をpushする
+   ```shell
+   $ git remote add origin git@github.com:zunda/zunda.github.io.git
+   $ git push -u origin master
+   ```
+1. 新しいレポジトリ`zunda/zunda.github.io`のSettingsからPagesを閲覧するとアカウントのUpgradeが必要と表示される。しばらく待とう。
+
