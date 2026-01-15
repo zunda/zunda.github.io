@@ -92,5 +92,17 @@ $ git commit -a
    $ git remote add origin git@github.com:zunda/zunda.github.io.git
    $ git push -u origin master
    ```
-1. 新しいレポジトリ`zunda/zunda.github.io`のSettingsからPagesを閲覧するとアカウントのUpgradeが必要と表示される。しばらく待とう。
+1. 新しいレポジトリのSettingsからVisibilityをPublicにする
+1. 新しいレポジトリのSettings-PagesのBuild and deploymentから
+   1. SourceをGitHub Actionsにして、
+   1. JekyllをConfigureして、
+   1. `.github/workflows/jekyll.yml`の内容を確認して、Commit changes...する。右ペインのFestured Actionsのうち、[Cache](https://github.com/marketplace/actions/cache)か[Download a Build Artifact](https://github.com/marketplace/actions/download-a-build-artifact)でインクリメンタルなビルドができるようになるかもしれない。
 
+ここまでのメモを公開してみます。
+
+```
+$ git pull
+$ git add _posts/2026-01-14-welcome-to-jekyll.md
+$ git commit
+$ git push
+```
