@@ -5,10 +5,10 @@ date:   2026-01-14 15:00:00 -1000
 categories: jekyll update
 ---
 
-[JekyllのIncremental Regeneration](https://jekyllrb.com/docs/configuration/incremental-regeneration/)を試してみたいので、GitHub Actionsがビルド結果のファイルをどのように扱うのか確認してみました。Incremental Regenerationを利用するには、
+[JekyllのIncremental Regeneration](https://jekyllrb.com/docs/configuration/incremental-regeneration/)を試してみたいので、GitHub Actionsがビルド結果のファイルをどのように扱うのか確認してみました。
 
-- GitHub Actionsによる前回のビルドから、`./_site/`以下のアーティファクトと`./.jekyll-metadata`ファイルを引き継いで、今回のビルドのために展開する
-- GitHub Actionsによるビルドごとにカレントディレクトリが変化しない
+- Incremental Regenerationを利用するには、GitHub Actionsによる前回のビルドから、`./_site/`以下のアーティファクトと`./.jekyll-metadata`ファイルを引き継いで、今回のビルドのために展開する、また、
+- 新しいポストを検出するためには、どうにかして`jekyll build`コマンドに新しいポストのリストを教えてもらうか、`./.jekyll-metadata`ファイルなどの変化を検出する
 
 必要がありそうです。
 
@@ -29,6 +29,15 @@ $ ruby -rpp -e 'pp Marshal.load(File.read(".jekyll-metadata")).first'
     "/home/zunda/c/src/github.com/zunda/zunda.github.io/vendor/bundle/ruby/4.0.0/gems/minima-2.5.2/_layouts/default.html"]}]
 ```
 
+## GitHub Actionsによるビルド
+GitHub Pagesにこのサイトを公開してもらってGitHub.comのユーザーインターフェースからGitHub ActionsのbuildジョブのBuild with jekyllステップログを確認すると、カレントディレクトリはいつも同じのようです。
+
+```
+Run bundle exec jekyll build --baseurl ""
+Configuration file: /home/runner/work/zunda.github.io/zunda.github.io/_config.yml
+            Source: /home/runner/work/zunda.github.io/zunda.github.io
+       Destination: /home/runner/work/zunda.github.io/zunda.github.io/_site
+```
 
 ## GitHub Actionsによるアーティファクト
 GitHub Pagesにこのサイトを公開してもらってGitHub.comのユーザーインターフェースからGitHub Actionsのログを確認すると、アーティファクトをダウンロードできることに気づきました。Tarファイルをzipしたもので、内容はローカルで`bundle exec jekyll serve`した時に`_site/`ディレクトリに生成されるものと同様のようです。
@@ -59,5 +68,3 @@ $ tree .
 ```
 
 このアーティファクトは、buildジョブのUpload artifactステップでアップロードされ、deployジョブのDeploy to GitHub Pagesステップでダウンロードされるものと同一のハッシュのようです。
-
-
