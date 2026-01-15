@@ -90,3 +90,15 @@ $ git add _posts/2026-01-15-find-new-pages-with-rss.md
 $ git commit
 $ git push
 ```
+
+GitHub ActionsのbuildジョブのFind new pages since previous deployのログは下記のようになりました。やったね!!
+
+```
+Run ruby ./script/find_new_pages.rb
+  ruby ./script/find_new_pages.rb
+  shell: /usr/bin/bash -e {0}
+  env:
+    GITHUB_PAGES: true
+New pages:
+https://blog.zunda.ninja/jekyll/update/2026/01/15/find-new-pages-with-rss.html
+```
