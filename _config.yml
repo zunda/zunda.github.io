@@ -27,6 +27,8 @@ url: "https://blog.zunda.ninja" # the base hostname & protocol for your site, e.
 #twitter_username: zundan
 #github_username:  zunda
 
+timezone: Etc/UTC
+
 # Build settings
 theme: minima
 markdown: kramdown
