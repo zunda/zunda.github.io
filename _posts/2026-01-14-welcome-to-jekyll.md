@@ -100,9 +100,60 @@ $ git commit -a
 
 ここまでのメモを公開してみます。
 
-```
+```shell
 $ git pull
 $ git add _posts/2026-01-14-welcome-to-jekyll.md
 $ git commit
 $ git push
+```
+
+## Rubyのバージョンを調整する
+新しいレポジトリのActionsタブを確認すると、無事にworkflowが起動したようですが、エラー終了が記録されていました。ログを確認するには、失敗したrunのコミットメッセージをクリックし、赤いマークの付いているworkflowのステップをクリックし、エラーの表示されている行の上の行をクリックするようです。
+
+```
+Installing Bundler
+  Using Bundler 4.0.3 from Gemfile.lock BUNDLED WITH 4.0.3
+  /opt/hostedtoolcache/Ruby/3.1.6/x64/bin/gem install bundler -v 4.0.3
+  ERROR:  Error installing bundler:
+  	bundler-4.0.3 requires Ruby version >= 3.2.0. The current ruby version is 3.1.6.
+  Took   0.36 seconds
+```
+
+`.github/workflows/jekyll.yml`を眺めると、下記のように`ruby/setup-ruby`のタグが指定されているようです。このレポジトリの[リリース](https://github.com/ruby/setup-ruby/releases)は執筆時点でv1.283.0まで進んでいるようなので、これを使ってみます。
+
+```yml
+jobs:
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Ruby
+        # https://github.com/ruby/setup-ruby/releases/tag/v1.207.0
+        uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4
+        with:
+          ruby-version: '3.1' # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+          cache-version: 0 # Increment this number if you need to re-download cached gems
+```
+
+```patch
+diff --git a/.github/workflows/jekyll.yml b/.github/workflows/jekyll.yml
+index 501686b..615d29b 100644
+--- a/.github/workflows/jekyll.yml
++++ b/.github/workflows/jekyll.yml
+@@ -34,10 +34,9 @@ jobs:
+       - name: Checkout
+         uses: actions/checkout@v4
+       - name: Setup Ruby
+-        # https://github.com/ruby/setup-ruby/releases/tag/v1.207.0
+-        uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4
++        # https://github.com/ruby/setup-ruby/releases/tag/v1.283.0
++        uses: ruby/setup-ruby@708024e6c902387ab41de36e1669e43b5ee7085e
+         with:
+-          ruby-version: '3.1' # Not needed with a .ruby-version file
+           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+           cache-version: 0 # Increment this number if you need to re-download cached gems
+       - name: Setup Pages
 ```
