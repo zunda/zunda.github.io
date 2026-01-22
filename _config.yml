@@ -28,6 +28,11 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://blog.zunda.ninja" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: zundan
 #github_username:  zunda
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /zunda-square.png
 
 timezone: Etc/UTC
 
