@@ -20,7 +20,10 @@
 
   &,
   &:visited {
-    color: $grey-color-dark;
+    color: $brand-color;
+  }
+  &:hover {
+    color: $brand-color-light;
   }
 }
 
@@ -37,7 +40,6 @@
   }
 
   .page-link {
-    color: $text-color;
     line-height: $base-line-height;
 
     // Gaps between nav items, but not on the last one
@@ -123,7 +125,6 @@
 
 .footer-col-wrapper {
   @include relative-font-size(0.9375);
-  color: $grey-color;
   margin-left: -$spacing-unit * 0.5;
   @extend %clearfix;
 }
@@ -199,7 +200,6 @@
 
 .post-meta {
   font-size: $small-font-size;
-  color: $grey-color;
 }
 
 .post-link {
