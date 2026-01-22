@@ -19,6 +19,7 @@
 # in the templates via {{ site.myvariable }}.
 
 title: zundaの個人サイト
+lang: ja
 author:
   name: zunda
   url: https://zunda.ninja
