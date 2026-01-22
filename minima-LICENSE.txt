@@ -1,4 +1,5 @@
 - _includes/footer.html
+- _includes/head.html
 - _sass/minima.scss
 - _sass/minima/_base.scss
 - _sass/minima/_layout.scss
