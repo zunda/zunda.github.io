@@ -1,3 +1,10 @@
+- _includes/footer.html
+- _sass/minima.scss
+- _sass/minima/_base.scss
+- _sass/minima/_layout.scss
+- _sass/minima/_syntax-highlighting.scss
+are copied from minima-2.5.2 and under the license below:
+
 The MIT License (MIT)
 
 Copyright (c) 2016-present Parker Moore and the minima contributors
