@@ -11,7 +11,7 @@
           <li class="p-name">
             {%- if site.author -%}
               {%- if site.author.name and site.author.url -%}
-                <a href="{{ site.author.url }}">{{ site.author.name | escape }}</a>
+                <a rel="me" href="{{ site.author.url }}">{{ site.author.name | escape }}</a>
               {%- else -%}
                 {{ site.author | escape }}
               {%- endif -%}
