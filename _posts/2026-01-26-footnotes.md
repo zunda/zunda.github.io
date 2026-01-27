@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Jekyllの記事に脚注を書く"
-date:   2026-01-26 16:00:00 -1000
+date:   2026-01-26 15:40:00 -1000
 categories: jekyll update
 ---
 
