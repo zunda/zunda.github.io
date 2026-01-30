@@ -40,6 +40,8 @@ timezone: Etc/UTC
 
 # Build settings
 theme: minima
+minima:
+  date_format: "%Y年%m月%d日"
 markdown: kramdown
 kramdown:
   input: GFM
