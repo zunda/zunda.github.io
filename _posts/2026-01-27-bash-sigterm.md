@@ -2,6 +2,7 @@
 layout: post
 title:  "bashスクリプトで子プロセスにSIGTERMを転送する"
 date:   2026-01-29 16:30:00 -1000
+last_modified_at: 2026-01-30 10:45:00 -1000
 categories: bash
 ---
 
@@ -12,9 +13,9 @@ HerokuというPlatform as a Service (PaaS)ではコンテナの停止時に[コ
 bundle exec puma -C config/puma.rb&
 bundle exec bin/jobs&
 cpids=`pgrep -P $$`;
-trap 'for pid in $cpids; do kill -TERM $pid; done' SIGTERM;
+trap 'for pid in $cpids; do kill -TERM $pid; done' TERM;
 wait -n;
-kill -TERM -$$;
+kill -TERM $$;
 wait
 ```
 
@@ -54,6 +55,4 @@ bashスクリプト内の`$$`パラメータは、それを実行しているbas
 `wait`組み込みコマンドで子プロセスの終了を待つことができます。`-n`オプションを付けるといずれかの子プロセスが終了するまでブロックします。オプションを付けないと全ての子プロセスが終了するまでブロックします。
 
 ## 残っている子プロセスにシグナルを送る
-`kill`コマンドにプロセスIDに負号を付けて指定することで、そのプロセスIDをリーダーとする[プロセスグープ](https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97)の全てのプロセスにシグナルを送ることができます。
-
-上記のスクリプトでは、SIGTERM以外のきっかけでいずれかの子プロセスが停止した場合に、他の子プロセスにSIGTERMを送って停止させます。
+上記のスクリプトでは、SIGTERM以外のきっかけでいずれかの子プロセスが停止した場合に、自プロセスにSIGTERMを送ることで`trap`に設定したコマンドが実行し残っている子プロセスにもSIGTERMを送ります。
