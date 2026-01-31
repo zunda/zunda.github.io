@@ -1,1 +1,1 @@
-GitHub Actionsで`jekyll build`が走り、GitHub pagesとして https://blog.zunda.ninja にデプロイされます。
+GitHub Actionsで`jekyll build`が走り、GitHub Pagesとして https://blog.zunda.ninja にデプロイされます。
