@@ -74,3 +74,4 @@ exclude:
   - script/
   - LICENSE.txt		
   - minima-LICENSE.txt
+  - README.md
