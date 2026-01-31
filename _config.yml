@@ -72,3 +72,5 @@ plugins:
 #   - vendor/ruby/
 exclude:
   - script/
+  - LICENSE.txt		
+  - minima-LICENSE.txt
