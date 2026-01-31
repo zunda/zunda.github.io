@@ -2,7 +2,7 @@
 layout: post
 title:  "Jekyllの記事に更新日を記す"
 date:   2026-01-30 10:30:00 -1000
-last_modified_at: 2026-01-30 10:40:00 -1000
+last_modified_at: 2026-01-30 14:20:00 -1000
 categories: jekyll update
 ---
 
@@ -21,8 +21,9 @@ categories: jekyll update
 minima-2.5.2の`_layouts/posts.html`を`./_layouts/`以下にコピーしてきて下記のように編集します。
 
 ```patch
-{% raw %}diff --git a/_layouts/post.html b/_layouts/post.html
-index abf9696..bb83c91 100644
+{% raw %}
+diff --git a/_layouts/post.html b/_layouts/post.html
+index abf9696..8abc4a9 100644
 --- a/_layouts/post.html
 +++ b/_layouts/post.html
 @@ -6,10 +6,17 @@ layout: default
@@ -36,22 +37,25 @@ index abf9696..bb83c91 100644
        </time>
 +      {%- if page.last_modified_at -%}
 +        • 更新:
-+        <span class="dt-published">
++        <time class="dt-published" datetime="{{ page.last_modified_at | date_to_xmlschema }}" itemprop="dateModified">
 +          {{ page.last_modified_at | date: date_format }}
-+        </span>
++        </time>
 +      {%- endif -%}
        {%- if page.author -%}
          • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
-       {%- endif -%}</p>{% endraw %}
+       {%- endif -%}</p>
+{% endraw %}
 ```
 
+(追記) Schema.orgを眺めていて[`datePublished`プロパティ](https://schema.org/datePublished)に加えて[`dateModified`プロパティ](https://schema.org/dateModified)があるのを見つけました。初出時には`<span>`に含めていた更新時刻を`<time itemprop="dateModified">`に含めるよう変更しました。
+
 ## 記事に更新日時を設定する
-フロントマターの`last_modified_at`変数を設定する。この記事では下記のように設定してみました。同じ日付が表示されることになります。
+フロントマターの`last_modified_at`変数を設定する。この記事では下記のように設定してみました。
 
 ```yml
 layout: post
 title:  "Jekyllの記事に更新日を記す"
 date:   2026-01-30 10:30:00 -1000
-last_modified_at: 2026-01-30 10:40:00 -1000
+last_modified_at: 2026-01-30 14:20:00 -1000
 categories: jekyll update
 ```
