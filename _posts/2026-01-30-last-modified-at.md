@@ -21,8 +21,7 @@ categories: jekyll update
 minima-2.5.2の`_layouts/posts.html`を`./_layouts/`以下にコピーしてきて下記のように編集します。
 
 ```patch
-{% raw %}
-diff --git a/_layouts/post.html b/_layouts/post.html
+{% raw %}diff --git a/_layouts/post.html b/_layouts/post.html
 index abf9696..8abc4a9 100644
 --- a/_layouts/post.html
 +++ b/_layouts/post.html
@@ -43,8 +42,7 @@ index abf9696..8abc4a9 100644
 +      {%- endif -%}
        {%- if page.author -%}
          • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
-       {%- endif -%}</p>
-{% endraw %}
+       {%- endif -%}</p>{% endraw %}
 ```
 
 (追記) Schema.orgを眺めていて[`datePublished`プロパティ](https://schema.org/datePublished)に加えて[`dateModified`プロパティ](https://schema.org/dateModified)があるのを見つけました。初出時には`<span>`に含めていた更新時刻を`<time itemprop="dateModified">`に含めるよう変更しました。
