@@ -259,6 +259,14 @@
  */
 .footnotes {
   border-top: 1px solid $grey-color-light;
-  padding: $spacing-unit 0;
+  padding: $spacing-unit 0 0 0;
   font-size: $small-font-size;
+}
+
+/**
+ * copyright notice
+ */
+.copyright {
+  font-size: $small-font-size;
+  padding: 1em 0;
 }
