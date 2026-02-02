@@ -31,8 +31,8 @@ layout: default
   {%- endif -%}
 
   <div class="copyright">
-    &copy; {{ page.date | date: "%Y" }} by <a href="{{ site.author.url }}">{{ site.author.name | escape }}</a>,
-    licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    &copy; {{ page.date | date: "%Y" }} by {{ site.author.name | escape }} &lt;<a href="{{ site.author.url }}">{{ site.author.url | escape }}</a>&gt;,
+    licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
   </div>
 
   <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
