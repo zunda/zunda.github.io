@@ -1,4 +1,4 @@
 <div>
-{% assign abs_url = page.url | absolute_url %}
+{% assign abs_url = page.url | absolute_url | url_encode %}
 <a target="_blank" rel="noopener" href="https://share.joinmastodon.org/#text={{ page.title | append: " | " | append: site.title | url_encode | append: "%0D" | append: abs_url }}">Share on Mastodon</a>
 </div>
