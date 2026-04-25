@@ -1,14 +1,14 @@
 ---
 layout: post
 title:  "コード懇親会 at RubyKaigi 2026でdRubyに触る"
-date:   2027-04-25 00:00:00 +0900
-categories: jekyll update
+date:   2027-04-26 00:00:00 +0900
+categories: rubykaigi codeparty
 ---
 
-[RubyKaigi 2026](https://rubykaigi.org/2026/)に参加してきました。[2015](https://rubykaigi.org/2015/)以来の現地参加です。RubyKaigiも楽しかったのですが、関連イベントとして開催された[コード懇親会/Code Party(Social Coding) at RubyKaigi 2026](https://andpad.connpass.com/event/385946/)もかなり楽しく、終電の差し迫るなか、勢い余って[ruby/uriへのIssue](https://github.com/ruby/uri/issues/224)を提出してしまったのでした。
+[RubyKaigi 2026](https://rubykaigi.org/2026/)に参加してきました。現地参加は[RubyKaigi 2015](https://rubykaigi.org/2015/)以来です。RubyKaigi本体も楽しかったのですが、関連イベントとして開催された[コード懇親会/Code Party(Social Coding) at RubyKaigi 2026](https://andpad.connpass.com/event/385946/)もかなり楽しく、終電の差し迫るなか、勢い余って[ruby/uriへのIssue](https://github.com/ruby/uri/issues/224)を提出してしまったのでした。
 
 ## 会場に到着したらRubyをインストールする
-RubyKaigiでの作業[^helper]が終わって会場の開始5分前くらいに会場の会議室に到着すると、多くの参加者がわいわい話をしながら軽食を食べていました。みなさんコード懇親会を楽しみにされている雰囲気です。やっぱりみんなコードを書くのだいすきよね。僕も軽食（とくにお寿司がおいしかった！）をいただいて、ラップトップを開いたところで、先日Rubyのリリースがあったのを思い出しました。
+RubyKaigiでの作業[^helper]が終わって会場の開始5分前くらいに会場の会議室に到着すると、多くの参加者がわいわい話をしながら軽食を食べていました。熱気。みなさんコード懇親会を楽しみにしている雰囲気です。やっぱりみんなコードを書くのだいすきよね。僕も軽食(とくにお寿司がおいしかった！)をいただいて、ラップトップを開いたところで、先日Rubyのリリースがあったのを思い出しました。
 
 ```sh
 $ brew update ruby-build
@@ -17,12 +17,12 @@ $ cd ~c/src/local/rk26-code-party
 $ rbenv local 4.0.3
 ```
 
-[^helper]: 今回はRubyKaigiのヘルパーの応募が当たったので、裏方としてかなり楽しませていただいたのでした。
+[^helper]: 今回は[ヘルパーへの応募](https://x.com/rubykaigi/status/2023355565007839375)が当たったので、裏方としてかなり楽しませていただいたのでした。
 
 ## dRubyでオブジェクトをやりとりする
-僕が参加したのは、[作者のsekiさんと一緒にdRubyを触ってみる](TODO)グループで、用意していただいていた[資料](https://www.druby.org/druby-matzyama.pdf)に沿ってdRubyを触っていきます。最近のRubyでは`webrick`がTODOライブラリーからはずれているので、gemとしてインストールします。`Gemfile`は下記のようになりました。
+僕が参加したのは、[作者のsekiさんと一緒にdRubyを触ってみる](https://github.com/andpad-dev/code-party/blob/main/rubykaigi-2026/README.md#theme-1-druby-by-seki)グループで、用意していただいていた[資料](https://www.druby.org/druby-matzyama.pdf)に沿ってdRubyを触ります。Ruby 3.0以降ではWEBrickは[標準ライブラリではない](https://docs.ruby-lang.org/ja/4.0/library/webrick.html)ので、gemとしてインストールします。最終的に`Gemfile`は下記のようになりました。
 
-```
+```ruby
 source "https://rubygems.org"
 gem "drb", "~> 2.2"
 gem "webrick", "~> 1.9"
@@ -30,8 +30,8 @@ gem "irb", "~> 1.18"
 gem "driq", "~> 0.4.3"
 ```
 
-### MacOS 15.7.5は自分のことをIPv6だと思っている
-dRubyでは一部のクラスのオブジェクトのやりとりにサーバが必要なので、ホストとポートを指定して起動するサーバとは別にクライアント側のプロセスでもサーバを起動しておきます。
+### macOSは自分がIPv6に居ると思っている
+dRubyでは一部のクラスのオブジェクトのやりとりにサーバが必要なので、ホストとポートを指定して起動するサーバとは別にクライアント側のプロセスでもサーバを起動します。
 
 (サーバ)
 
@@ -65,18 +65,17 @@ $ bundle exec irb -r drb
 > h[:greeting] = "Hello, World!"
 ```
 
-ここでの注目点は、`@exported_uri`が`druby://::1:49357`となっていることでした。URIを指定せずに起動したサーバは、`::1`にバインドしているようです。
+ここで、`@exported_uri`が`druby://::1:49357`となっていることが気になりました。
 
 ### IPv6アドレスのURI
-TODO:RFCの再確認 3986か？
+[RFC 2732](https://datatracker.ietf.org/doc/html/rfc2732#section-2)によると、ホスト名部がIPv6であるURLではホスト名部を角かっこ`[]`で囲う必要があるようですが、上記で` DRb.start_service`が返したオブジェクトでは、`@exported_uri`で`::1`が角かっこに囲まれていません。
 
-[RFC 2732](https://datatracker.ietf.org/doc/html/rfc2732#section-2)によると、ホスト名部がIPv6であるURLではホスト名部を角かっこ(`[]`)で囲う必要があるようですが、上記で` DRb.start_service`が返したオブジェクトでは、`@exported_uri`で`::1`が角かっこに囲まれていません。
-
-ここでdRubyのコードを追ってみます。MacOS 15.7.5上のRuby 4.0.3のdrb 2.2.3です。`@exported_uri`のホスト名部分は下記のメソッドで得ているようです。
+ここでdRubyのコードを追ってみます。MacOS 15.7.5上のRuby 4.0.3のdRuby 2.2.3です。`@exported_uri`のホスト名部分は下記のメソッドで得ているようです。
 
 (drb/drb.rb)
 
 ```ruby
+  :
     # Returns the hostname of this server
     def self.getservername
       host = Socket::gethostname
@@ -90,6 +89,7 @@ TODO:RFCの再確認 3986か？
         'localhost'
       end
     end
+  :
 ```
 
 `irb`で試してみると確かに`::1`になるようです。
@@ -101,6 +101,8 @@ URIにするコードは下記のようになっていました。たしかに`d
       if ... 
         host = getservername
         soc = open_server_inaddr_any(host, port)
+      else
+  :
       end
       port = soc.addr[1] ...
   :
@@ -110,9 +112,7 @@ URIにするコードは下記のようになっていました。たしかに`d
 
 このインスタンス変数はdRubyが動作する際に参照されることはなさそうだけれど、なんとなく気持ち悪いのでurl標準ライブラリなどでRFCどおりに整形してもらえばいいだろう。
 
-## 標準ライブラリでIPv6アドレスのURLを整形してもらう
-
-
+## 標準ライブラリでURLを整形してもらう
 ```
 $ irb
 
@@ -132,8 +132,9 @@ $ irb
 .../4.0.3/lib/ruby/4.0.0/uri/rfc3986_parser.rb:130:in 'URI::RFC3986_Parser#split': bad URI (is not URI?): "https://::1:443/" (URI::InvalidURIError)
 ```
 
+やっぱりできないかー。と思って、やっぱりできないかー。という姿勢をしていたら、だいじょうぶですか？とお声がけいただきました。ありがたいありがたい！これは絶望ではなく希望の姿勢なのです。
+
 ## 一緒の部屋に居るのすごい
 そんなこんなで、気づいたことを口頭でご報告して、uriライブラリについては報告先を推薦していただいて、20分間ほどで[新規のIssue](https://github.com/ruby/uri/issues/224)の提出までさせていただいてしまったのでした。
 
-## TODO
-- [ ] URIとURLとの区別
+プルリクエストにできるといいな。
