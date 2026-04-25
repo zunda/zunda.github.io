@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "コード懇親会 at RubyKaigi 2026でdRubyに触る"
-date:   2027-04-25 22:30:00 +0900
+date:   2026-04-25 22:30:00 +0900
 categories: rubykaigi codeparty
 ---
 
