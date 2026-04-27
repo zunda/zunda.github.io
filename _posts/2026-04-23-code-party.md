@@ -2,6 +2,7 @@
 layout: post
 title:  "コード懇親会 at RubyKaigi 2026でdRubyに触る"
 date:   2026-04-25 22:30:00 +0900
+last_modified_at: 2026-04-27 14:15 +0900
 categories: rubykaigi codeparty
 ---
 
@@ -138,3 +139,16 @@ $ irb
 そんなこんなで、気づいたことを口頭でご報告して、uriライブラリについては報告先を推薦していただいて、20分間ほどで[新規のIssue](https://github.com/ruby/uri/issues/224)の提出までさせていただいてしまったのでした。
 
 プルリクエストにできるといいな。
+
+(追記)
+
+`URI::Generic.new()`を呼び出す時に`arg_check`引数[^arg]に`true`を渡すと期待通りに角かっこが付くことがわかりました。
+
+```
+> URI::Generic.new('https', nil, '::1', 443, nil, '/', nil, nil, nil, URI::Generic::DEFAULT_PARSER, true)
+=> #<URI::Generic https://[::1]:443/>
+```
+
+[^arg]: [URI::Genericクラスのマニュアル](https://docs.ruby-lang.org/en/4.0/URI/Generic.html#method-c-new)にあるように11番目の引数です。
+
+[ruby/uri](https://github.com/ruby/uri)をforkして`test/uri/test_generic.rb`を眺めていたら[ちゃんと角かっこを確認している](https://github.com/ruby/uri/blob/52077e9/test/uri/test_generic.rb#L844-L853)のを見つけました。
