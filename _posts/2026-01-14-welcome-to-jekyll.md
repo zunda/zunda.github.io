@@ -2,6 +2,7 @@
 layout: post
 title:  "Jekyll始めました"
 date:   2026-01-14 10:53:04 -1000
+last_modified_at: 2026-05-02 15:45:00 -1000
 categories: jekyll update
 ---
 
@@ -107,7 +108,7 @@ $ git commit
 $ git push
 ```
 
-## Rubyのバージョンを調整する
+### Rubyのバージョンを調整する
 新しいレポジトリのActionsタブを確認すると、無事にworkflowが起動したようですが、エラー終了が記録されていました。ログを確認するには、失敗したrunのコミットメッセージをクリックし、赤いマークの付いているworkflowのステップをクリックし、エラーの表示されている行の上の行をクリックするようです。
 
 ```
@@ -157,3 +158,9 @@ index 501686b..615d29b 100644
            cache-version: 0 # Increment this number if you need to re-download cached gems
        - name: Setup Pages
 ```
+
+## Netlifyで公開する
+
+(2026-05-02 追記)
+
+Netlifyによるガイド[A Step-by-Step Guide: Jekyll 4.0 on Netlify](https://www.netlify.com/blog/2020/04/02/a-step-by-step-guide-jekyll-4.0-on-netlify/#connecting-to-netlify)などに従って作業すれば、Netlifyに公開することもできそうです。
