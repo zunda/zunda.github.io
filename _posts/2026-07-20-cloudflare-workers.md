@@ -2,7 +2,7 @@
 layout: post
 title:  "静的サイトをCloudflare Workersで公開する"
 date:   2026-07-20 15:00:00 -1000
-last_modified_at: 2026-07-20 16:00:00 -1000
+last_modified_at: 2026-07-20 16:50:00 -1000
 categories: vitepress cloudflare cloudflareworkers
 ---
 
@@ -155,4 +155,58 @@ index 65f32b5..5451c22 100644
 +  },
 +  "packageManager": "yarn@4.5.0"
  }
+```
+
+## Cloudflare Workersでのビルド
+Cloudflareのダッシュボードに戻り、左のペインから、Build - Workers & Pagesを選択し、先ほど作成したWorkerを選択します。下方のVersionペインの、先ほどpushしたハッシュをクリックすると、ビルド済みのページを閲覧することができました。右の方のブランチ名をクリックすると、ビルドログを閲覧できるようです。
+
+```
+2026-07-21T02:32:15.629Z	Initializing build environment...
+2026-07-21T02:32:17.922Z	Success: Finished initializing build environment
+2026-07-21T02:32:18.646Z	Cloning repository...
+2026-07-21T02:32:20.773Z	Restoring from dependencies cache
+2026-07-21T02:32:20.774Z	Restoring from build output cache
+2026-07-21T02:32:20.776Z	Detected the following tools from environment: yarn@4.9.1, nodejs@22.16.0
+2026-07-21T02:32:20.914Z	Installing project dependencies: yarn
+  :
+2026-07-21T02:32:27.984Z	Executing user build command: yarn docs:build
+  :
+2026-07-21T02:32:39.458Z	Executing user deploy command: npx wrangler deploy
+  :
+2026-07-21T02:32:48.543Z	Detected Project Settings:
+2026-07-21T02:32:48.543Z	 - Worker Name: mitomein
+2026-07-21T02:32:48.543Z	 - Framework: Static
+2026-07-21T02:32:48.543Z	 - Build Command: yarn run docs:build
+2026-07-21T02:32:48.544Z	 - Output Directory: docs/.vitepress/dist
+  :
+2026-07-21T02:32:48.549Z	📄 Create wrangler.jsonc:
+2026-07-21T02:32:48.549Z	  {
+2026-07-21T02:32:48.549Z	    "$schema": "node_modules/wrangler/config-schema.json",
+2026-07-21T02:32:48.549Z	    "name": "mitomein",
+2026-07-21T02:32:48.549Z	    "compatibility_date": "2026-07-21",
+2026-07-21T02:32:48.549Z	    "observability": {
+2026-07-21T02:32:48.549Z	      "enabled": true
+2026-07-21T02:32:48.549Z	    },
+2026-07-21T02:32:48.549Z	    "assets": {
+2026-07-21T02:32:48.554Z	      "directory": "docs/.vitepress/dist"
+2026-07-21T02:32:48.554Z	    },
+2026-07-21T02:32:48.554Z	    "compatibility_flags": [
+2026-07-21T02:32:48.554Z	      "nodejs_compat"
+2026-07-21T02:32:48.554Z	    ]
+2026-07-21T02:32:48.555Z	  }
+  :
+2026-07-21T02:33:01.495Z	[build] Running: yarn run docs:build
+  :
+2026-07-21T02:33:13.732Z	🌀 Building list of assets...
+2026-07-21T02:33:13.735Z	✨ Read 194 files from the assets directory /opt/buildhome/repo/docs/.vitepress/dist
+2026-07-21T02:33:13.817Z	🌀 Starting asset upload...
+2026-07-21T02:33:15.577Z	🌀 Found 182 new or modified static assets to upload. Proceeding with upload...
+  :
+2026-07-21T02:33:17.530Z	✨ Success! Uploaded 182 files (1 already uploaded) (1.95 sec)
+  :
+2026-07-21T02:33:20.063Z	Deployed mitomein triggers (1.06 sec)
+2026-07-21T02:33:20.064Z	  https://mitomein.zundan-cloudflare.workers.dev
+  :
+2026-07-21T02:33:24.555Z	✨ Success! Build completed.
+  :
 ```
