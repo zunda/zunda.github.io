@@ -10,7 +10,7 @@ categories: vitepress cloudflare cloudflareworkers
 
 いろいろあって、VitePressに生成してもらっている静的サイトmitome.inのトップレベルドメインを変更してmitome.inkに引っ越すことにしました。ついでに、ビルドと公開にCloudflare Workersを試してみることにしました。
 
-## 現状
+## 作業前の状態
 Cloudflareのアカウントに支払い手段を設定して引っ越し先のドメインmitome.inkを購入しました。
 
 静的サイトのコードはGitHubに[zunda/mitome.in](https://github.com/zunda/mitome.in)として管理していただいていて、Netlifyから[mitome.in](https://mitome.in)に公開しています。
@@ -159,8 +159,8 @@ index 65f32b5..5451c22 100644
 
 この状態で、Yarn 1.22.15で`yarn install --pure-lockfile`も完走することを確認できました。
 
-## Cloudflare Workersでのビルド
-Cloudflareのダッシュボードに戻り、左のペインから、Build - Workers & Pagesを選択し、先ほど作成したWorkerを選択します。下方のVersionペインの、先ほどpushしたハッシュをクリックすると、ビルド済みのページを閲覧することができました。右の方のブランチ名をクリックすると、ビルドログを閲覧できるようです。ホスト名は、`<Cloudflareが付与したversion ID>-<Workerのproject name>.<Cloudflareのaccount name>-cloudflare.workers.dev`になるようです。
+### Cloudflare Workersでのビルド
+Cloudflareのダッシュボードに戻り、左のペインから、Build - Workers & Pagesを選択し、先ほど作成したWorkerを選択します。下方のVersionペインの、先ほどGitHubにpushしたハッシュをクリックすると、ビルド済みのページを閲覧することができました。右の方のブランチ名をクリックすると、ビルドログを閲覧できるようです。ホスト名は、`<Cloudflareが付与したversion ID>-<Workerのproject name>.<Cloudflareのaccount name>-cloudflare.workers.dev`になるようです。
 
 ```
 2026-07-21T02:32:15.629Z	Initializing build environment...
@@ -214,3 +214,20 @@ Cloudflareのダッシュボードに戻り、左のペインから、Build - Wo
 ```
 
 Cloudflareによるドキュメント[Build branches · Cloudflare Workers docs](https://developers.cloudflare.com/workers/ci-cd/builds/build-branches/#configure-non-production-branch-builds)によると、Builds for non-production branchesが有効になっている場合は、上記で観察したように、Production branch (今回は`master`)以外のブランチへのpushでも、Cloudflare Workersはビルドとデプロイを始めるようです。GitHubで作成されたプルリクエストに関する設定を見つけることはできませんでした。
+
+## カスタムドメインの設定
+Workerに[custom domain](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)を追加することで、そのドメインでWorkerによるビルドの結果を閲覧できるようです。
+
+Cloudflareのダッシュボードに戻り、左のペインから、Build - Workers & Pagesを選択し、先ほど作成したWorkerを選択します。上の方に並んでいるメニューからDomains
+を選択し、
+
+1. Custom Domains and RoutesセクションのAdd Domainボタンを押します
+1. Connect domainダイアログで希望のドメインを選択します
+1. Subdomainを設定します。今回はAPEX (root)ドメインで公開するので空白のままにします
+1. Add domainボタンを押します
+
+この状態でCloudflareのDNSレコードを確認すると下記のようなレコードが生成されていました。また、[https://mitome.ink](https://mitome.ink)でWorkerによるビルドの結果を閲覧できました。
+
+| Content | Type | Target | Proxy status |
+|---|---|---|---|
+| mitome.ink | Worker | mitoemein | Proxied |
