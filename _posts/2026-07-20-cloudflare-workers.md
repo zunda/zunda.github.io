@@ -2,7 +2,7 @@
 layout: post
 title:  "静的サイトをCloudflare Workersで公開する"
 date:   2026-07-20 15:00:00 -1000
-last_updated_at: 2026-07-20 16:00:00 -1000
+last_modified_at: 2026-07-20 16:00:00 -1000
 categories: vitepress cloudflare cloudflareworkers
 ---
 
