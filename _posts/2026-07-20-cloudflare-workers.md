@@ -2,7 +2,7 @@
 layout: post
 title:  "静的サイトをCloudflare Workersで公開する"
 date:   2026-07-20 15:00:00 -1000
-last_modified_at: 2026-07-20 16:50:00 -1000
+last_modified_at: 2026-07-21 11:20:00 -1000
 categories: vitepress cloudflare cloudflareworkers
 ---
 
@@ -13,7 +13,7 @@ categories: vitepress cloudflare cloudflareworkers
 ## 現状
 Cloudflareのアカウントに支払い手段を設定して引っ越し先のドメインmitome.inkを購入しました。
 
-静的サイトのコードはGitHubに[zunda/mitome.in](https://github.com/zunda/mitome.in)として管理していただいています。
+静的サイトのコードはGitHubに[zunda/mitome.in](https://github.com/zunda/mitome.in)として管理していただいていて、Netlifyから[mitome.in](https://mitome.in)に公開しています。
 
 ## Cloudflare Workers
 Cloudflareによるドキュメントを眺めてみると、Workersでは[CI/CD機能](https://developers.cloudflare.com/workers/ci-cd/)としてWorkers Buildsやその他のプロバイダによるビルドシステムを利用できるようです。ここでは、[Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/)のGitHub Integrationを利用してみます。
@@ -94,7 +94,7 @@ warning " > vue-toast-notification@3.1.3" has unmet peer dependency "vue@^3.0".
 Done in 1.44s.
 ```
 
-YarnコマンドをCloudflare Workersと同じバージョンにすることで、無事に`yarn install`を失敗させることができました。
+YarnコマンドをCloudflare Workersと同じバージョンにすることで、無事に`yarn install --immutable`を失敗させることができました。
 
 ```
 $ yarn set version 4.5.0
@@ -112,7 +112,7 @@ $ yarn install --immutable
 ➤ YN0000: · Failed with errors in 1s 329ms
 ```
 
-## 足りないモジュールの追加
+### 足りないモジュールの追加
 ブランチで作業します。
 
 ```
@@ -157,8 +157,10 @@ index 65f32b5..5451c22 100644
  }
 ```
 
+この状態で、Yarn 1.22.15で`yarn install --pure-lockfile`も完走することを確認できました。
+
 ## Cloudflare Workersでのビルド
-Cloudflareのダッシュボードに戻り、左のペインから、Build - Workers & Pagesを選択し、先ほど作成したWorkerを選択します。下方のVersionペインの、先ほどpushしたハッシュをクリックすると、ビルド済みのページを閲覧することができました。右の方のブランチ名をクリックすると、ビルドログを閲覧できるようです。
+Cloudflareのダッシュボードに戻り、左のペインから、Build - Workers & Pagesを選択し、先ほど作成したWorkerを選択します。下方のVersionペインの、先ほどpushしたハッシュをクリックすると、ビルド済みのページを閲覧することができました。右の方のブランチ名をクリックすると、ビルドログを閲覧できるようです。ホスト名は、`<Cloudflareが付与したversion ID>-<Workerのproject name>.<Cloudflareのaccount name>-cloudflare.workers.dev`になるようです。
 
 ```
 2026-07-21T02:32:15.629Z	Initializing build environment...
@@ -210,3 +212,5 @@ Cloudflareのダッシュボードに戻り、左のペインから、Build - Wo
 2026-07-21T02:33:24.555Z	✨ Success! Build completed.
   :
 ```
+
+Cloudflareによるドキュメント[Build branches · Cloudflare Workers docs](https://developers.cloudflare.com/workers/ci-cd/builds/build-branches/#configure-non-production-branch-builds)によると、Builds for non-production branchesが有効になっている場合は、上記で観察したように、Production branch (今回は`master`)以外のブランチへのpushでも、Cloudflare Workersはビルドとデプロイを始めるようです。GitHubで作成されたプルリクエストに関する設定を見つけることはできませんでした。
